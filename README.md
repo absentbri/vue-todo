@@ -10,15 +10,23 @@ npm install
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
 ### Lints and fixes files
 ```
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Builds production Docker (served by alpine nginx)
+```
+docker build -t absentbri/vue-todo .
+```
+
+### Creates and runs docker container
+```
+docker run -it -p 80:80 --name vue-todo absentbri/vue-todo
+```
+
