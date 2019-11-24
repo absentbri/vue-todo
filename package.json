@@ -1,5 +1,8 @@
 {
   "name": "vue-todo",
+  "author": "Brian Ramsey",
+  "repository": "https://github.com/absentbri/vue-todo",
+  "description": "Quick and dirty todo list for testing detached front/backend services.",
   "version": "0.1.0",
   "private": true,
   "scripts": {
