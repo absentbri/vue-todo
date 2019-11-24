@@ -25,7 +25,8 @@ npm run build
 docker build -t absentbri/vue-todo .
 ```
 
-### Creates and runs docker container (interactive)
+### Creates and runs docker container
+#### interactive
 ```
 docker run -it -p 80:80 --name vue-todo absentbri/vue-todo
 ```
