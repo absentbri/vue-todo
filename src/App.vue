@@ -131,6 +131,7 @@
 		},
 		methods: {
 			async addItem() {
+				this.clearNotification();
 				const title = this.newItem.trim();
 				if(title.length) {
 					const item = {
@@ -138,35 +139,46 @@
 						created: moment().toDate(),
 						completed: false
 					};
-					const res = await axios.post(this.endpoint, { data: item });
-					console.log(res);
-					if(res.status === 201) {
-						item.id = res.data.id;
-						this.todos.push(item);
-					} else {
-						this.setNotification("warning", `Could not create item, check the back-end service ${this.endpoint} is running`);
+					try {
+						const res = await axios.post(this.endpoint, { data: item });
+						if(res.status === 201) {
+							item.id = res.data.id;
+							this.todos.push(item);
+						} else {
+							this.setNotification("warning", `Could not create item, check the back-end service ${this.endpoint} is running`);
+						}
+						this.newItem = "";
+					} catch (e) {
+						this.setNotification("error", `Network connection to ${this.endpoint} has failed`);
 					}
 				}
-				this.newItem = "";
 			},
 			async removeItem(idx) {
+				this.clearNotification();
 				const { id } = this.todos[idx];
-				const res = await axios.delete(`${this.endpoint}/${id}`);
-				console.log(res);
-				if(res.status === 200) { // should be 204?
-					this.todos.splice(idx, 1);
-				} else {
-					this.setNotification("warning", `Could not delete item, check the back-end service ${this.endpoint} is running`);
+				try {
+					const res = await axios.delete(`${this.endpoint}/${id}`);
+					if(res.status === 200) { // should be 204?
+						this.todos.splice(idx, 1);
+					} else {
+						this.setNotification("warning", `Could not delete item, check the back-end service ${this.endpoint} is running`);
+					}
+				} catch (e) {
+					this.setNotification("error", `Network connection to ${this.endpoint} has failed`);
 				}
 			},
 			async markItem(event, idx) {
+				this.clearNotification();
 				const item = this.todos[idx];
-
-				const res = await axios.put(`${this.endpoint}/${item.id}`, { data: item });
-				if(res.status === 200) {
-					// nothing?
-				} else {
-					this.setNotification("warning", `Could not update item, check the back-end service ${this.endpoint} is running`);
+				try {
+					const res = await axios.put(`${this.endpoint}/${item.id}`, { data: item });
+					if(res.status === 200) {
+						// nothing?
+					} else {
+						this.setNotification("warning", `Could not update item, check the back-end service ${this.endpoint} is running`);
+					}
+				} catch (e) {
+					this.setNotification("error", `Network connection to ${this.endpoint} has failed`);
 				}
 			},
 			formattedDate(date) {
@@ -181,19 +193,18 @@
 				this.notification.type = "";
 				this.notification.message = "";
 			},
-			getItems() {
+			async getItems() {
 				// CRUD: Read
-				axios.get(this.endpoint, { params: { _limit: 20 } })
-					.then((response) => {
-						if(response.status === 200) {
-							this.todos = response.data;
-							return true;
-						}
-						return false;
-					})
-					.catch((error) => {
-						console.error(error);
-					})
+				try {
+					const res = await axios.get(this.endpoint, { params: { _limit: 20 } });
+					if(res.status === 200) {
+						this.todos = res.data;
+						return true;
+					}
+					return false;
+				} catch (e) {
+					this.setNotification("error", `Network connection to ${this.endpoint} has failed`);
+				}
 			},
 		},
 		created() {
