@@ -35,3 +35,13 @@ docker run -it -p 80:80 --name vue-todo absentbri/vue-todo
 docker run -d -p 80:80 --name vue-todo absentbri/vue-todo
 ```
 
+http://localhost:80
+
+### Docker Compose method
+```bash
+docker-compose up
+```
+
+Binds to port 8081 
+
+http://localhost:8081
