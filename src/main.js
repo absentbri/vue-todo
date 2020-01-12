@@ -6,5 +6,9 @@ Vue.config.productionTip = false;
 
 new Vue({
   vuetify,
-  render: h => h(App)
+  render: h => h(App, {
+    props: {
+      endpoint: "http://localhost:8000/todos"
+    }
+  })
 }).$mount('#app');

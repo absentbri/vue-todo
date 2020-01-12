@@ -67,7 +67,7 @@
 									v-model="item.completed"
 									color="primary"
 									@change="markItem($event, i)"
-								></v-checkbox>
+								/>
 							</v-list-item-action>
 
 							<v-list-item-content>
@@ -77,7 +77,7 @@
 									{{ item.title }}
 								</v-list-item-title>
 								<v-list-item-subtitle>
-									Created on: {{ formattedDate(item.created) }}
+									Created on: {{ formattedDate(item.created_at) }}
 								</v-list-item-subtitle>
 							</v-list-item-content>
 							<v-btn
