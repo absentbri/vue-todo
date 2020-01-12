@@ -140,10 +140,10 @@
 						completed: false
 					};
 					try {
-						const res = await axios.post(this.endpoint, { data: item });
+						const res = await axios.post(this.endpoint, { ...item });
 						if(res.status === 201) {
 							item.id = res.data.id;
-							this.todos.push(item);
+							this.todos.unshift(item);
 						} else {
 							this.setNotification("warning", `Could not create item, check the back-end service ${this.endpoint} is running`);
 						}
@@ -171,7 +171,7 @@
 				this.clearNotification();
 				const item = this.todos[idx];
 				try {
-					const res = await axios.put(`${this.endpoint}/${item.id}`, { data: item });
+					const res = await axios.put(`${this.endpoint}/${item.id}`, { ...item });
 					if(res.status === 200) {
 						// nothing?
 					} else {
